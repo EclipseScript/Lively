@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPL 2025 Live Streaming</title>
+    
+    <!-- HLS.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #1e90ff, #ff00ff);
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: white;
+            text-align: center;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            max-width: 90%;
+            width: 400px; /* Default width, adjustable on smaller screens */
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #ffeb3b;
+            text-shadow: 2px 2px 5px #000;
+        }
+        video {
+            width: 100%; /* Responsive video width */
+            max-width: 100%;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+        .btn-container {
+            margin-top: 20px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            margin: 10px;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+        .telegram-btn {
+            background-color: #00b7ff;
+        }
+        .telegram-btn:hover {
+            background-color: #ff00ff;
+            transform: scale(1.1);
+        }
+        .message-box {
+            margin-top: 20px;
+        }
+        input {
+            padding: 10px;
+            font-size: 18px;
+            width: 100%;
+            max-width: 300px;
+            text-align: center;
+            border-radius: 5px;
+            border: 2px solid #ffcc00;
+            box-shadow: 0px 0px 10px rgba(255, 204, 0, 0.5);
+        }
+        .disclaimer {
+            margin-top: 20px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+            max-width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 12px;
+            color: #ccc;
+            text-align: center;
+        }
+        .quality-selector {
+            margin-top: 15px;
+        }
+        select {
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 5px;
+            background: #fff;
+            color: #333;
+            border: 2px solid #ffcc00;
+            cursor: pointer;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        /* Media Queries for Mobile */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8em; /* Smaller heading for mobile */
+            }
+            .container {
+                padding: 15px;
+                width: 90%;
+            }
+            video {
+                width: 100%;
+            }
+            .btn {
+                padding: 12px 20px;
+                font-size: 1.1em;
+            }
+            input, select {
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📺 𝐈𝐏𝐋 𝟐𝟎𝟐𝟓 𝐋𝐢𝐯𝐞 𝐒𝐭𝐫𝐞𝐚𝐦𝐢𝐧𝐠 - 𝐁𝐲 @𝐉𝐚𝐫𝐌𝐨𝐝 🔴</h1>
+        <!-- Video Player -->
+        <video id="video" controls poster="https://ee4ee8c03a26.eu-central-1.playback.live-video.net/api/video/v1/eu-central-1.755921704393.channel.LOohfipmCQDP.m3u8"></video>
+
+        <!-- Quality Selector -->
+        <div class="quality-selector">
+            <label for="quality">Select Quality: </label>
+            <select id="quality" onchange="changeQuality()">
+                <option value="-1">Auto</option>
+            </select>
+        </div>
+
+        <!-- Buttons -->
+        <div class="btn-container">
+            <a href="https://t.me/jarmod" class="btn telegram-btn" target="_blank">👉𝑱𝒐𝒊𝒏 𝑻𝒆𝒍𝒆𝒈𝒓𝒂𝒎 𝑪𝒉𝒂𝒏𝒏𝒆𝒍👈</a>
+        </div>
+
+        <!-- Message Box -->
+        <div class="message-box">
+            <input type="text" value="📢𝐖𝐀𝐓𝐂𝐇 𝐅𝐑𝐄𝐄 𝐈𝐏𝐋 𝟐𝟎𝟐𝟓 🤩🔥" readonly>
+        </div>
+
+        <!-- Disclaimer Section -->
+        <div class="disclaimer">
+            <p>Note: Please use responsibly and refer to official platforms for legal viewing.</p>
+        </div>
+    </div>
+
+    <!-- Video Streaming Script -->
+    <script>
+        var video = document.getElementById('video');
+        var qualitySelect = document.getElementById('quality');
+        var videoSrc = "https://ee4ee8c03a26.eu-central-1.playback.live-video.net/api/video/v1/eu-central-1.755921704393.channel.LOohfipmCQDP.m3u8";
+        var hls;
+
+        // Check if HLS.js is supported
+        if (Hls.isSupported()) {
+            console.log("✅ HLS.js is supported!");
+            hls = new Hls();
+            hls.loadSource(videoSrc);
+            hls.attachMedia(video);
+
+            // When manifest is parsed, populate quality levels
+            hls.on(Hls.Events.MANIFEST_PARSED, function () {
+                video.play();
+                populateQualityLevels();
+                debugLevels(); // Debug function to check levels
+            });
+
+            // Handle errors
+            hls.on(Hls.Events.ERROR, function (event, data) {
+                console.log("❌ HLS Error: ", data);
+                if (data.fatal) {
+                    alert("Streaming error occurred. Please try again.");
+                }
+            });
+        } 
+        // Native HLS Support (iPhone & Safari)
+        else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            console.log("✅ Native M3U8 Support Enabled!");
+            video.src = videoSrc;
+            video.addEventListener('loadedmetadata', function () {
+                video.play();
+            });
+        } else {
+            console.log("❌ HLS is NOT supported in this browser!");
+            alert("Your browser does not support M3U8 video playback.");
+        }
+
+        // Populate quality levels in dropdown
+        function populateQualityLevels() {
+            var levels = hls.levels;
+            if (levels.length === 0) {
+                var option = document.createElement('option');
+                option.value = -1;
+                option.text = "No Quality Options Available";
+                qualitySelect.appendChild(option);
+                console.log("No quality levels detected in the stream.");
+            } else {
+                for (var i = 0; i < levels.length; i++) {
+                    var option = document.createElement('option');
+                    option.value = i;
+                    option.text = levels[i].height + 'p'; // Assuming height is available
+                    qualitySelect.appendChild(option);
+                }
+                console.log("Quality levels detected: ", levels);
+            }
+        }
+
+        // Change quality manually
+        function changeQuality() {
+            var selectedLevel = parseInt(qualitySelect.value);
+            if (selectedLevel === -1) {
+                hls.currentLevel = -1; // Auto mode
+                console.log("Switched to Auto Quality");
+            } else {
+                hls.currentLevel = selectedLevel; // Set specific quality
+                console.log("Switched to " + hls.levels[selectedLevel].height + "p");
+            }
+        }
+
+        // Debug function to log available levels
+        function debugLevels() {
+            var levels = hls.levels;
+            if (levels.length > 0) {
+                console.log("Available quality levels: ", levels.map(level => level.height + 'p'));
+            } else {
+                console.log("No quality levels available in the stream.");
+            }
+        }
+    </script>
+</body>
+</html>
